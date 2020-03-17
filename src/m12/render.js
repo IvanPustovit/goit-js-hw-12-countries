@@ -10,18 +10,25 @@ input.addEventListener('input', inputSearch)
 function inputSearch(e){
     e.preventDefault()
     const value = input.value;
-    if(value.length >= 3){
+    if(value.length < 3){
+        // PNotify.alert('Введіть більше символів')    
+    }
+        else{
        country(value)
     .then(data => {
         if(data.length == 1){
             renderInfoCoutry(data)
-        }else{
+        }
+        if(data.length > 10){
+            PNotify.alert('Уточніть Ваш пошук більш детальніше')
+        }
+        else{
         data.forEach(element => {
             let name = element
             render(element)
         }
     )}})
-    .catch(PNotify.alert('Уточніть Ваш пошук')
+    .catch(err => {console.log(err); PNotify.alert('Уточніть Ваш пошук')}
     )
 }}
 

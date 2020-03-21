@@ -10,7 +10,7 @@ function inputSearch(e) {
   e.preventDefault();
   const value = input.value;
   if (value.length < 3) {
-    // PNotify.alert('Введіть більше символів')
+    PNotify.alert("Enter more characters");
   } else {
     country(value)
       .then(data => {
@@ -18,7 +18,7 @@ function inputSearch(e) {
           renderInfoCoutry(data);
         }
         if (data.length > 10) {
-          PNotify.alert("Уточніть Ваш пошук більш детальніше");
+          PNotify.alert("Refine your search in more detail");
         } else {
           data.forEach(element => {
             let name = element;
@@ -28,7 +28,7 @@ function inputSearch(e) {
       })
       .catch(err => {
         console.log(err);
-        PNotify.alert("Уточніть Ваш пошук");
+        PNotify.alert("Refine your search");
       });
   }
 }
@@ -44,7 +44,7 @@ function render(obj) {
 }
 
 //Розмітка опису однієї країни
-function renderInfoCoutry(obj) {
+function renderInfoCoutry(arr) {
   const countryInfo = document.querySelector(".country-info");
-  countryInfo.insertAdjacentHTML("beforeend", info(obj));
+  countryInfo.insertAdjacentHTML("beforeend", info(arr));
 }

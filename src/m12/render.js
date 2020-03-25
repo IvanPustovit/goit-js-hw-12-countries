@@ -1,6 +1,7 @@
 import country from "./fetchCountries";
 import PNotify from "../../node_modules/pnotify/dist/es/PNotify.js";
 import info from "./countryInfo.hbs";
+import countryName from "./countryList.hbs";
 
 const input = document.querySelector("#search-form");
 
@@ -11,40 +12,29 @@ function inputSearch(e) {
   const value = input.value;
   if (value.length < 3) {
     PNotify.alert("Enter more characters");
-  } else {
-    country(value)
-      .then(data => {
-        if (data.length == 1) {
-          renderInfoCoutry(data);
-        }
-        if (data.length > 10) {
-          PNotify.alert("Refine your search in more detail");
-        } else {
-          data.forEach(element => {
-            let name = element;
-            render(element);
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        PNotify.alert("Refine your search");
-      });
+    return;
   }
-}
-
-//Розмітка списку країн
-function renderList(countryName) {
-  return `<li>${countryName}</li> `;
-}
-
-function render(obj) {
-  const listCountry = document.querySelector(".list-country");
-  listCountry.insertAdjacentHTML("beforeend", renderList(obj.name));
+  country(value)
+    .then(data => {
+      if (data.length == 1) {
+        renderInfoCountry(data);
+        return;
+      }
+      if (data.length > 10) {
+        PNotify.alert("Refine your search in more detail");
+        return;
+      }
+      const listCountry = document.querySelector(".list-country");
+      listCountry.insertAdjacentHTML("beforeend", countryName(data));
+    })
+    .catch(err => {
+      console.log(err);
+      PNotify.alert("Refine your search");
+    });
 }
 
 //Розмітка опису однієї країни
-function renderInfoCoutry(arr) {
+function renderInfoCountry(arrCountryFetch) {
   const countryInfo = document.querySelector(".country-info");
-  countryInfo.insertAdjacentHTML("beforeend", info(arr));
+  countryInfo.insertAdjacentHTML("beforeend", info(arrCountryFetch));
 }
